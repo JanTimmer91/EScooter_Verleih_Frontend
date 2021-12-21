@@ -15,6 +15,7 @@ import axios from "axios";
 class ScooterReservation extends Component {
 
     scooters = {};
+    userid = 1;
 
     constructor(props) {
         super(props);
@@ -63,6 +64,8 @@ class ScooterReservation extends Component {
         if (this.state.scooterAvailable) {
             document.getElementById("start_page").classList.toggle('rotated');
             document.getElementById("back_page").classList.toggle('rotated');
+            document.getElementById("input_days").classList.remove("invalid");
+            document.getElementById("input_hours").classList.remove("invalid");
         }
 //
        // let data = {
@@ -77,8 +80,70 @@ class ScooterReservation extends Component {
     }
 
     handleClickCommitScooterrental() {
-        document.getElementById("back_page").classList.toggle('rotated');
-        document.getElementById("success_page").classList.toggle('rotated');
+
+        
+        // Validation
+        const input_days = document.getElementById("input_days");
+        const input_hours = document.getElementById("input_hours");
+        const days = parseInt(document.getElementById("input_days").value);
+        const hours = parseInt(document.getElementById("input_hours").value);
+        
+        input_hours.classList.remove("invalid");
+        input_days.classList.remove("invalid");
+
+        if (days >= 0 && hours >= 0 && (days+hours)>0) {
+            
+            var currentDate = new Date();
+
+            var enddate = currentDate;
+            var total_hours = hours + (days * 24)
+            enddate.setTime(enddate.getTime() + (total_hours*60*60*1000));
+            
+            var enddate_formatted = enddate.getFullYear() + "-" + enddate.getMonth() + "-" + enddate.getDate() 
+                    + " " + enddate.getHours() + ":" + enddate.getMinutes() + ":" + enddate.getSeconds();
+
+            console.log(enddate_formatted);
+
+            let post_data = {
+                "scooterid": this.state.availableScooterId,
+                "userid": this.userid,
+                "enddate": enddate_formatted
+            };
+
+            axios.post('http://localhost/BUSINESSSW/addleihe.php', post_data)
+            .then(response => response.data)
+            .then((data) => {
+                var ok = data.ok;
+                console.log(data)
+                if (ok) {
+
+                    axios.post('http://localhost/BUSINESSSW/updatescooter.php', {
+                        "status": "Besetzt",
+                        "id": this.state.availableScooterId
+                    })
+                    .then(response => response.data)
+                    .then(data => {
+                        if (data.ok) {
+                            input_days.value = "";
+                            input_hours.value = "";
+                            document.getElementById("back_page").classList.toggle('rotated');
+                            document.getElementById("success_page").classList.toggle('rotated');
+                        } else {
+                            alert("Der E-Scooter konnte nicht ausgeliehen werden!");
+                        }
+                    });
+
+
+                } else {
+                    alert("Der E-Scooter konnte nicht ausgeliehen werden!");
+                }            
+            });
+
+        } else {
+            input_hours.classList.add("invalid");
+            input_days.classList.add("invalid");
+        }
+
     }
 
     handleClickScooterRentalBack() {
@@ -111,8 +176,12 @@ class ScooterReservation extends Component {
                     <div id="back_page" class="page rotated">
                         <div class="commitRental">
                             <p id="page_headline">E-Scooter reservieren</p>
-                            <p id="label_enddate">Enddatum:</p>
-                            <input type={"datetime-local"}></input>
+                            <div class="content">
+                                <p id="label">Tage:</p>
+                                <input id="input_days" type={"number"} min="0" value="0"></input>
+                                <p id="label">Stunden:</p>
+                                <input id="input_hours" type={"number"} min="0" value="1"></input>
+                            </div>
                             <div class="buttons">
                                 <button id="btnReserve" onClick={this.handleClickCommitScooterrental}>Jetzt Reservieren</button>
                                 <button id="btnCancel" onClick={this.handleClickRentScooter}>Abbrechen</button>
