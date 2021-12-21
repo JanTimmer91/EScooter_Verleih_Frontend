@@ -25,9 +25,8 @@ class ScooterReservation extends Component {
         };
 
         this.handleClickRentScooter = this.handleClickRentScooter.bind(this);
-
-        // this.getScooters();
-
+        this.handleClickCommitScooterrental = this.handleClickCommitScooterrental.bind(this);
+        this.handleClickScooterRentalBack = this.handleClickScooterRentalBack.bind(this);
         
     }
 
@@ -60,15 +59,36 @@ class ScooterReservation extends Component {
 
 
     handleClickRentScooter() {
-        let data = {
-            "scooterid": this.state.availableScooterId,
-            "userid": 1,
-            "enddate": ""
-        };
 
-        axios.post('http://localhost/BUSINESSSW/addleihe.php', data)
-        .then(response => response.data)
-        .then(data => console.log(data));
+        if (this.state.scooterAvailable) {
+            document.getElementById("start_page").classList.toggle('rotated');
+            document.getElementById("back_page").classList.toggle('rotated');
+        }
+//
+       // let data = {
+       //     "scooterid": this.state.availableScooterId,
+       //     "userid": 1,
+       //     "enddate": ""
+       // };
+//
+       // axios.post('http://localhost/BUSINESSSW/addleihe.php', data)
+       // .then(response => response.data)
+       // .then(data => console.log(data));
+    }
+
+    handleClickCommitScooterrental() {
+        document.getElementById("back_page").classList.toggle('rotated');
+        document.getElementById("success_page").classList.toggle('rotated');
+    }
+
+    handleClickScooterRentalBack() {
+        this.setState({
+            scooterAvailable: false,
+            availableScooterId: -1
+        })
+        document.getElementById("success_page").classList.toggle('rotated');
+        document.getElementById("start_page").classList.toggle('rotated');
+        this.scooterAvailable();
     }
 
     componentDidMount() {
@@ -80,22 +100,36 @@ class ScooterReservation extends Component {
     render() {
         return (
             <div class="container">
-                <div id="start_page">
-                    <h1>Scooter Leihen</h1>
-                    <div class="rentScooter" onClick={this.handleClickRentScooter}>
-                        <img id="scooterImage" src={escooterimg_sw} alt="E-Scooter"></img>
-                        <p id="scooterText"></p>
+                <h1>Scooter Leihen</h1>
+                <div class="pages">
+                    <div id="start_page" class="page">
+                        <div class="rentScooter" onClick={this.handleClickRentScooter}>
+                            <img id="scooterImage" src={escooterimg_sw} alt="E-Scooter"></img>
+                            <p id="scooterText"></p>
+                        </div>
                     </div>
-                </div>
-                <div id="back_page">
-                    <p>E-Scooter reservieren</p>
-                    <p>Enddatum:</p>
-                    <input type={"datetime-local"}></input>
-                    <div>
-                        <button>Jetzt Reservieren</button>
+                    <div id="back_page" class="page rotated">
+                        <div class="commitRental">
+                            <p id="page_headline">E-Scooter reservieren</p>
+                            <p id="label_enddate">Enddatum:</p>
+                            <input type={"datetime-local"}></input>
+                            <div class="buttons">
+                                <button id="btnReserve" onClick={this.handleClickCommitScooterrental}>Jetzt Reservieren</button>
+                                <button id="btnCancel" onClick={this.handleClickRentScooter}>Abbrechen</button>
+                            </div>
+                        </div>
 
                     </div>
-
+                    <div id="success_page" class="page rotated">
+                        <div class="successRental">
+                            <img id="scooterImageSuccess" src={escooterimg_sw} alt="E-Scooter"></img>
+                            <div class="text">
+                                <p class="heading">Reservierung erfolgreich.</p>
+                                <p>Der <b>E-Scooter Nr. {this.state.availableScooterId}</b> steht nun für Sie bereit</p>
+                                <button id="btnBack" onClick={this.handleClickScooterRentalBack}>Zurück</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
