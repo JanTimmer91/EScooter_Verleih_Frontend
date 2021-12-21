@@ -1,0 +1,35 @@
+
+.rentScooter {
+    position: relative;
+    width: 300px;
+    height: 400px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 25px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.rentScooter:hover > img {
+    transform: scale(1.2);
+}
+
+.rentScooter img {
+    position: absolute;
+    width: 100%;
+    border-radius: inherit;
+    transition: all 0.3s linear;
+}
+
+.rentScooter p {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    transform: translate(0%, -10%);
+    padding: 10px;
+
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
