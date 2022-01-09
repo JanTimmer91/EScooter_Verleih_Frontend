@@ -11,7 +11,6 @@ import PropTypes from "prop-types";
 
 
 const ContentContainer = styled.div`
-
 `;
 
 const CardContainer = styled.div`
@@ -52,7 +51,7 @@ const TrCustom = styled.tr`
    }
 `;
 
-class Reservierungen extends Component {
+class Reservierungen_Single_User extends Component {
 
     constructor(props) {
         super(props);
@@ -67,15 +66,16 @@ class Reservierungen extends Component {
 
     componentDidMount() {
         document.body.style.backgroundColor = "rgba(203,203,210,.15)"
-        this.getReservations()
+        this.getReservations(1)
     }
 
-    getReservations() {
-        axios.get('http://localhost/BUSINESSSW/verleihoverview.php')
+    getReservations(userId) {
+        axios.post('http://localhost/BUSINESSSW/verleihoverviewbyperson.php', {"id": userId})
             .then(response => response.data)
             .then(data => {
-                this.setState({reservations: data})
-            });
+                console.log(data)
+            })
+
     }
 
     getTimeStamp() {
@@ -161,7 +161,7 @@ class Reservierungen extends Component {
     }
 }
 
-Reservierungen.propTypes = {
+Reservierungen_Single_User.propTypes = {
     RESERVATION_ID: PropTypes.string,
     USER_ID: PropTypes.string,
     SCOOTER_ID: PropTypes.string,
@@ -169,4 +169,4 @@ Reservierungen.propTypes = {
     ENDDATE: PropTypes.string,
 
 };
-export default Reservierungen;
+export default Reservierungen_Single_User;
