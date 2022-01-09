@@ -145,7 +145,10 @@ input {
     cursor: pointer;
 }
 
-
+.highlighted {
+    color: #fc5439;
+    font-weight: bold;
+}
 
 .text .heading {
     font-weight: bold;

@@ -7,6 +7,7 @@ import './ScooterReservation.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
+import ScooterReservationSuccess from "./ScooterReservationSuccess";
 
 //const ContentContainer = styled.div`
 
@@ -17,17 +18,24 @@ class ScooterReservation extends Component {
     scooters = {};
     userid = 1;
 
+    goBackCallbackFunction = () => {this.handleClickScooterRentalBack();};
+    
     constructor(props) {
         super(props);
 
         this.state = {
             scooterAvailable: false,
-            availableScooterId: -1
+            availableScooterId: -1,
+            enddate_printable: "",
+            input_days: 0,
+            input_hours: 1 
         };
 
         this.handleClickRentScooter = this.handleClickRentScooter.bind(this);
         this.handleClickCommitScooterrental = this.handleClickCommitScooterrental.bind(this);
         this.handleClickScooterRentalBack = this.handleClickScooterRentalBack.bind(this);
+
+       
         
     }
 
@@ -40,16 +48,14 @@ class ScooterReservation extends Component {
                 if (scooter.RESERVATION_STATUS == "Frei") {
                     this.setState({
                         scooterAvailable: true,
-                        availableScooterId: scooter.SCOOTER_ID
+                        availableScooterId: parseInt(scooter.SCOOTER_ID)
                     });
                 }
 
                 if (this.state.scooterAvailable) {
-                    console.log("verfügbar");
                     document.getElementById("scooterText").innerText = "Jetzt E-Scooter ausleihen";
                     document.getElementById("scooterImage").src = escooterimg;
                 } else {
-                    console.log("nicht verfügbar");
                     document.getElementById("scooterText").innerText = "Zur Zeit ist leider kein E-Scooter verfügbar.";
                     document.getElementById("scooterImage").src = escooterimg_sw;
                 }
@@ -60,23 +66,12 @@ class ScooterReservation extends Component {
 
 
     handleClickRentScooter() {
-
         if (this.state.scooterAvailable) {
             document.getElementById("start_page").classList.toggle('rotated');
             document.getElementById("back_page").classList.toggle('rotated');
             document.getElementById("input_days").classList.remove("invalid");
             document.getElementById("input_hours").classList.remove("invalid");
         }
-//
-       // let data = {
-       //     "scooterid": this.state.availableScooterId,
-       //     "userid": 1,
-       //     "enddate": ""
-       // };
-//
-       // axios.post('http://localhost/BUSINESSSW/addleihe.php', data)
-       // .then(response => response.data)
-       // .then(data => console.log(data));
     }
 
     handleClickCommitScooterrental() {
@@ -101,8 +96,11 @@ class ScooterReservation extends Component {
             
             var enddate_formatted = enddate.getFullYear() + "-" + enddate.getMonth() + "-" + enddate.getDate() 
                     + " " + enddate.getHours() + ":" + enddate.getMinutes() + ":" + enddate.getSeconds();
+                    
+            this.setState({
+                enddate_printable: enddate.getDate()+"."+enddate.getMonth()+"."+enddate.getFullYear() + " um " + enddate.getHours() + ":" + enddate.getMinutes() + " Uhr"
+            });
 
-            console.log(enddate_formatted);
 
             let post_data = {
                 "scooterid": this.state.availableScooterId,
@@ -115,6 +113,7 @@ class ScooterReservation extends Component {
             .then((data) => {
                 var ok = data.ok;
                 console.log(data)
+                console.log(ok)
                 if (ok) {
 
                     axios.post('http://localhost/BUSINESSSW/updatescooter.php', {
@@ -165,12 +164,12 @@ class ScooterReservation extends Component {
     render() {
         return (
             <div class="container">
-                <h1>Scooter Leihen</h1>
+                <h1>E-Scooter Leihen</h1>
                 <div class="pages">
                     <div id="start_page" class="page">
                         <div class="rentScooter" onClick={this.handleClickRentScooter}>
                             <img id="scooterImage" src={escooterimg_sw} alt="E-Scooter"></img>
-                            <p id="scooterText"></p>
+                            <p id="scooterText">Zur Zeit ist leider kein E-Scooter verfügbar.</p>
                         </div>
                     </div>
                     <div id="back_page" class="page rotated">
@@ -178,9 +177,9 @@ class ScooterReservation extends Component {
                             <p id="page_headline">E-Scooter reservieren</p>
                             <div class="content">
                                 <p id="label">Tage:</p>
-                                <input id="input_days" type={"number"} min="0" value="0"></input>
+                                <input id="input_days" type={"number"} min="0" value={this.state.input_days} onChange={(e) => {this.setState({input_days: e.target.value})}}></input>
                                 <p id="label">Stunden:</p>
-                                <input id="input_hours" type={"number"} min="0" value="1"></input>
+                                <input id="input_hours" type={"number"} min="0" value={this.state.input_hours} onChange={(e) => {this.setState({input_hours: e.target.value})}}></input>
                             </div>
                             <div class="buttons">
                                 <button id="btnReserve" onClick={this.handleClickCommitScooterrental}>Jetzt Reservieren</button>
@@ -190,16 +189,10 @@ class ScooterReservation extends Component {
 
                     </div>
                     <div id="success_page" class="page rotated">
-                        <div class="successRental">
-                            <img id="scooterImageSuccess" src={escooterimg_sw} alt="E-Scooter"></img>
-                            <div class="text">
-                                <p class="heading">Reservierung erfolgreich.</p>
-                                <p>Der <b>E-Scooter Nr. {this.state.availableScooterId}</b> steht nun für Sie bereit</p>
-                                <button id="btnBack" onClick={this.handleClickScooterRentalBack}>Zurück</button>
-                            </div>
-                        </div>
+                        <ScooterReservationSuccess scooterId={this.state.availableScooterId} enddate={this.state.enddate_printable} goBackCallback={this.goBackCallbackFunction} />
                     </div>
                 </div>
+
             </div>
 
         );
