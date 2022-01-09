@@ -2,7 +2,7 @@
 
 In Intellij:
 
-1. Oben rechts Edit Configurations gehen
+1. Oben rechts auf Edit Configurations gehen
 2. npm links in Leiste auswählen
 3. bei "Command" müsste der "run" parameter schon gesetzt sein
 4. Bei "Scripts" "start" manuell setzen
