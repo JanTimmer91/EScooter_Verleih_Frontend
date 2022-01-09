@@ -134,8 +134,17 @@ class Reservierungen extends Component {
                                             <td>{reservation.USER_ID}</td>
                                             <td>{reservation.SCOOTER_ID}</td>
                                             <td>{reservation.STARTDATE}</td>
-                                            <td>{reservation.ENDDATE}</td>
-                                        </>
+                                            {
+                                                new Date(reservation.ENDDATE) < new Date() ?
+                                                    <>
+                                                        <td>({reservation.STARTDATE})</td>
+                                                        <b style={{color: "green", fontWeight: "bold"}}>Reservierung
+                                                            abgelaufen</b></>
+                                                    : <>
+                                                        <td>({reservation.ENDDATE})</td>
+                                                        <b style={{color: "red", fontWeight: "bold"}}>Reservierung
+                                                            aktiv</b></>
+                                            }                                        </>
                                     </tr>
                                     : null
                                 ) :
@@ -158,5 +167,6 @@ Reservierungen.propTypes = {
     SCOOTER_ID: PropTypes.string,
     STARTDATE: PropTypes.string,
     ENDDATE: PropTypes.string,
+
 };
 export default Reservierungen;
