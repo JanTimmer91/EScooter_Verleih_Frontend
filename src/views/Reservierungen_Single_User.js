@@ -73,9 +73,8 @@ class Reservierungen_Single_User extends Component {
         axios.post('http://localhost/BUSINESSSW/verleihoverviewbyperson.php', {"id": userId})
             .then(response => response.data)
             .then(data => {
-                console.log(data)
-            })
-
+                this.setState({reservations: data})
+            });
     }
 
     getTimeStamp() {
