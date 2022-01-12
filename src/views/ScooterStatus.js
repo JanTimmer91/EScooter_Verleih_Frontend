@@ -36,7 +36,6 @@ export default class ScooterStatus extends Component {
 
     render() {
         const { countFreeScooter } = this.state;
-        console.log("Testergebnis "+countFreeScooter)
         return (
             <div className="card text-center m-3">
                 <h5 className="card-header">Verfügbarkeit prüfen</h5>

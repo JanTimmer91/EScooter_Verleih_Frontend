@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Redirect } from "react-router-dom";
-import Uebersicht from "../Uebersicht";
+
 import './login.css';
 
 export default class Login extends Component {
@@ -9,28 +8,27 @@ export default class Login extends Component {
         super(props);
         this.state = {
           name: "",
-          password: "",
-          test: null,
+          password: ""
         }
 
         this.handleClickLogin = this.handleClickLogin.bind(this);
     }
 
     handleClickLogin() {
-            alert('test click');
-            console.log("tesesest");
-        
+        alert('test');
         // Validation
         const name = document.getElementById("name").value;
         const password = document.getElementById("password").value;
-        alert("name "+name); 
-        alert("password "+password); 
 
-            const loginInformation = { name: "name", password: "password" }; 
-            console.log("loginInfo "+loginInformation.password);     
-            alert("loginInformation "+loginInformation);   
             axios.post('http://localhost:8888/BUSINESSSW/login.php')
-            .then(console.log("test Variable "));
+            .then(response => response.data)
+            .then(data => {
+                if (data) {
+                    alert("OK!");
+                } else {
+                    alert("Nicht ok!");
+                }
+            });
          
             
             ;
@@ -43,10 +41,10 @@ export default class Login extends Component {
                 <div className='div-login'>
                     <h1>Anmelden</h1>
                     <div>
-                        <form onSubmit = {this.handleSubmit}>
-                            <input type='email' name='email' placeholder='email...' required onChange={this.handleChange}/>
-                            <input type='password' name='pwd' placeholder='password...' required onChange={this.handleChange}/>
-                            <button onSubmit={this.handleSubmit}>Log In</button>
+                        <form>
+                            <input type='text' name='name' placeholder='name...'/>
+                            <input type='password' name='password' placeholder='password...'/>
+                            <button onSubmit={this.handleClickLogin}>Log In</button>
                         </form>
                     </div>
                 </div>
