@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import styled from 'styled-components';
 
-import escooterimg_sw from './escooter_sw.jpg';
-import escooterimg from './escooter.jpg';
+import escooterimg_sw from '../assets/escooter_sw.jpg';
+import escooterimg from '../assets/escooter.jpg';
 import './ScooterReservation.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
