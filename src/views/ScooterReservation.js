@@ -7,7 +7,6 @@ import './ScooterReservation.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
-import ScooterReservationSuccess from "./ScooterReservationSuccess";
 
 //const ContentContainer = styled.div`
 
@@ -26,139 +25,144 @@ class ScooterReservation extends Component {
         this.state = {
             scooterAvailable: false,
             availableScooterId: -1,
-            enddate_printable: "",
-            input_days: 0,
-            input_hours: 1 
+            activeReservationId: -1,
+            reservedScooterId: -1,
+            activePage: ""
         };
 
-        this.handleClickRentScooter = this.handleClickRentScooter.bind(this);
-        this.handleClickCommitScooterrental = this.handleClickCommitScooterrental.bind(this);
-        this.handleClickScooterRentalBack = this.handleClickScooterRentalBack.bind(this);
-
-       
-        
+        this.handleRentScooter = this.handleRentScooter.bind(this);
+        this.handleReturnScooter = this.handleReturnScooter.bind(this);
+        this.handleReload = this.handleReload.bind(this);
     }
 
+    getActiveScooterRental() {
+        // Check if there is an open reservation
+
+        axios.post('http://localhost/BUSINESSSW/verleihoverviewbypersonempty.php', {id: this.userid})
+        .then(response => {
+            if (response.data.length > 0) {
+                this.setState({
+                    activeReservationId: response.data[0].RESERVATION_ID,
+                    reservedScooterId: response.data[0].SCOOTER_ID
+                });
+                this.showReturnScooterScreen();
+            } else {
+                this.setState({
+                    activeReservationId: -1,
+                    reservedScooterId: -1
+                });
+                this.scooterAvailable();
+            }
+            
+        });
+    }
 
     scooterAvailable() {
-        axios.get('http://localhost/BUSINESSSW/scooteroverview.php')
+        // Chech if there is an available scooter
+
+        axios.get('http://localhost/BUSINESSSW/getScooterStatus.php')
         .then(response => {
             this.scooters = response.data;
+            this.setState({
+                scooterAvailable: false,
+                availableScooterId: -1
+            });
             this.scooters.forEach((scooter) => {
                 if (scooter.RESERVATION_STATUS == "Frei") {
                     this.setState({
                         scooterAvailable: true,
                         availableScooterId: parseInt(scooter.SCOOTER_ID)
                     });
-                }
-
-                if (this.state.scooterAvailable) {
-                    document.getElementById("scooterText").innerText = "Jetzt E-Scooter ausleihen";
-                    document.getElementById("scooterImage").src = escooterimg;
-                } else {
-                    document.getElementById("scooterText").innerText = "Zur Zeit ist leider kein E-Scooter verfügbar.";
-                    document.getElementById("scooterImage").src = escooterimg_sw;
-                }
-            });
-        });
-        
-    }
-
-
-    handleClickRentScooter() {
-        if (this.state.scooterAvailable) {
-            document.getElementById("start_page").classList.toggle('rotated');
-            document.getElementById("back_page").classList.toggle('rotated');
-            document.getElementById("input_days").classList.remove("invalid");
-            document.getElementById("input_hours").classList.remove("invalid");
-        }
-    }
-
-    handleClickCommitScooterrental() {
-
-        
-        // Validation
-        const input_days = document.getElementById("input_days");
-        const input_hours = document.getElementById("input_hours");
-        const days = parseInt(document.getElementById("input_days").value);
-        const hours = parseInt(document.getElementById("input_hours").value);
-        
-        input_hours.classList.remove("invalid");
-        input_days.classList.remove("invalid");
-
-        if (days >= 0 && hours >= 0 && (days+hours)>0) {
-            
-            var currentDate = new Date();
-
-            var enddate = currentDate;
-            var total_hours = hours + (days * 24)
-            enddate.setTime(enddate.getTime() + (total_hours*60*60*1000));
-            
-            var enddate_formatted = enddate.getFullYear() + "-" + enddate.getMonth() + "-" + enddate.getDate() 
-                    + " " + enddate.getHours() + ":" + enddate.getMinutes() + ":" + enddate.getSeconds();
                     
-            this.setState({
-                enddate_printable: enddate.getDate()+"."+enddate.getMonth()+"."+enddate.getFullYear() + " um " + enddate.getHours() + ":" + enddate.getMinutes() + " Uhr"
+                }
             });
-
-
-            let post_data = {
-                "scooterid": this.state.availableScooterId,
-                "userid": this.userid,
-                "enddate": enddate_formatted
-            };
-
-            axios.post('http://localhost/BUSINESSSW/addleihe.php', post_data)
-            .then(response => response.data)
-            .then((data) => {
-                var ok = data.ok;
-                console.log(data)
-                console.log(ok)
-                if (ok) {
-
-                    axios.post('http://localhost/BUSINESSSW/updatescooter.php', {
-                        "status": "Besetzt",
-                        "id": this.state.availableScooterId
-                    })
-                    .then(response => response.data)
-                    .then(data => {
-                        if (data.ok) {
-                            input_days.value = "";
-                            input_hours.value = "";
-                            document.getElementById("back_page").classList.toggle('rotated');
-                            document.getElementById("success_page").classList.toggle('rotated');
-                        } else {
-                            alert("Der E-Scooter konnte nicht ausgeliehen werden!");
-                        }
-                    });
-
-
-                } else {
-                    alert("Der E-Scooter konnte nicht ausgeliehen werden!");
-                }            
-            });
-
-        } else {
-            input_hours.classList.add("invalid");
-            input_days.classList.add("invalid");
-        }
-
+            if (this.state.scooterAvailable) {
+                this.showRentScooterScreen();
+            } else {
+                this.showNoScootersAvailableScreen();
+            }
+        });
     }
 
-    handleClickScooterRentalBack() {
-        this.setState({
-            scooterAvailable: false,
-            availableScooterId: -1
-        })
-        document.getElementById("success_page").classList.toggle('rotated');
-        document.getElementById("start_page").classList.toggle('rotated');
-        this.scooterAvailable();
-    }
 
     componentDidMount() {
-        document.body.style.backgroundColor = "rgba(203,203,210,.15)"
+        this.initScooterReservation();
+    }
 
-        this.scooterAvailable();
+
+    initScooterReservation() {
+        this.getActiveScooterRental();
+    }
+
+
+
+    handleRentScooter() {
+        let post_data = {
+            "scooterid": this.state.availableScooterId,
+            "userid": this.userid
+        };
+
+        axios.post('http://localhost/BUSINESSSW/addReservation.php', post_data)
+        .then(response => response.data)
+        .then((data) => {
+            if (data.update && data.insert) {
+                this.showRentScooterSuccessScreen();
+            } else {
+                alert("Der E-Scooter konnte nicht ausgeliehen werden!");
+            }            
+        });
+    }
+
+    handleReturnScooter() {
+        let post_data = {
+            "reservationid": this.state.activeReservationId,
+            "id": this.state.reservedScooterId
+        };
+
+        axios.post('http://localhost/BUSINESSSW/removeReservation.php', post_data)
+        .then(response => response.data)
+        .then((data) => {
+            if (data.Update3 && data.Update2) {
+                this.showReturnScooterSuccessScreen();
+            } else {
+                alert("Die Rückgabe war nicht erfolgreich.");
+            }            
+        });
+    }
+
+    handleReload() {
+        this.getActiveScooterRental();
+    }
+
+
+    // Functions for changing visible components
+
+    showNoScootersAvailableScreen() {
+        this.showScreen("no_scooter_page");
+    }
+
+    showRentScooterScreen() {
+        this.showScreen("rent_page");
+    }
+
+    showReturnScooterScreen() {
+        this.showScreen("return_page");
+    }
+
+    showRentScooterSuccessScreen() {
+        this.showScreen("rent_success_page");
+    }
+
+    showReturnScooterSuccessScreen() {
+        this.showScreen("return_success_page");
+    }
+
+    showScreen(elementId) {
+        if (this.state.activePage != "") {
+            document.getElementById(this.state.activePage).classList.toggle('rotated');
+        }
+        document.getElementById(elementId).classList.toggle('rotated');
+        this.setState({activePage: elementId });   
     }
 
     render() {
@@ -166,33 +170,47 @@ class ScooterReservation extends Component {
             <div class="container">
                 <h1>E-Scooter Leihen</h1>
                 <div class="pages">
-                    <div id="start_page" class="page">
-                        <div class="rentScooter" onClick={this.handleClickRentScooter}>
-                            <img id="scooterImage" src={escooterimg_sw} alt="E-Scooter"></img>
-                            <p id="scooterText">Zur Zeit ist leider kein E-Scooter verfügbar.</p>
+                    <div id="no_scooter_page" class="page rotated">
+                        <div class="page_content" onClick={this.handleReload}>
+                            <img src={escooterimg_sw} alt="E-Scooter"></img>
+                            <div class="text">
+                                <p>Zur Zeit ist leider kein E-Scooter verfügbar.</p>
+                            </div>
                         </div>
                     </div>
-                    <div id="back_page" class="page rotated">
-                        <div class="commitRental">
-                            <p id="page_headline">E-Scooter reservieren</p>
-                            <div class="content">
-                                <p id="label">Tage:</p>
-                                <input id="input_days" type={"number"} min="0" value={this.state.input_days} onChange={(e) => {this.setState({input_days: e.target.value})}}></input>
-                                <p id="label">Stunden:</p>
-                                <input id="input_hours" type={"number"} min="0" value={this.state.input_hours} onChange={(e) => {this.setState({input_hours: e.target.value})}}></input>
-                            </div>
-                            <div class="buttons">
-                                <button id="btnReserve" onClick={this.handleClickCommitScooterrental}>Jetzt Reservieren</button>
-                                <button id="btnCancel" onClick={this.handleClickRentScooter}>Abbrechen</button>
+                    <div id="rent_page" class="page rotated">
+                        <div class="page_content" onClick={this.handleRentScooter}>
+                            <img src={escooterimg} alt="E-Scooter"></img>
+                            <p>Jetzt E-Scooter ausleihen</p>
+                        </div>
+                    </div>
+                    <div id="rent_success_page" class="page rotated">
+                        <div class="successRental">
+                            <img id="scooterImageSuccess" src={escooterimg_sw} alt="E-Scooter"></img>
+                            <div class="text">
+                                <h3>Reservierung erfolgreich.</h3>
+                                <p>Der <span class="highlighted">E-Scooter Nr. {this.state.availableScooterId}</span> steht nun für Sie bereit</p>
+                                <button onClick={this.handleReload}>Zurück</button>
                             </div>
                         </div>
+                    </div>
+                    <div id="return_page" class="page rotated">
+                        <div class="page_content" onClick={this.handleReturnScooter}>
+                            <img src={escooterimg_sw} alt="E-Scooter"></img>
+                            <p>E-Scooter jetzt zurückgeben.</p>
+                        </div>
+                    </div>
+                    <div id="return_success_page" class="page rotated">
+                        <div class="page_content">
+                            <img src={escooterimg_sw} alt="E-Scooter"></img>
+                            <div class="text">
+                                <h3>Der E-Scooter wurde zurückgegeben.</h3>
+                                <button onClick={this.handleReload}>Zurück</button>
+                            </div>
 
-                    </div>
-                    <div id="success_page" class="page rotated">
-                        <ScooterReservationSuccess scooterId={this.state.availableScooterId} enddate={this.state.enddate_printable} goBackCallback={this.goBackCallbackFunction} />
+                        </div>
                     </div>
                 </div>
-
             </div>
 
         );

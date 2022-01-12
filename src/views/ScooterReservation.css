@@ -1,8 +1,31 @@
+/* Common styles for reservation */
+
 .container {
     position: relative;
     color: #333;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+button {
+    background: #fc5439;
+    border: 1px solid #fc5439;
+    padding: 5px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+h3 {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.highlighted {
+    color: #fc5439;
+    font-weight: bold;
+}
+
+
+/* Styles for page rotation */
 
 .pages {
     position: relative;
@@ -21,7 +44,7 @@
 }
 
 
-.rentScooter {
+.page_content {
     position: relative;
     width: 300px;
     height: 350px;
@@ -31,18 +54,18 @@
     overflow: hidden;
 }
 
-.rentScooter:hover > img {
+.page_content:hover > img {
     transform: scale(1.2);
 }
 
-.rentScooter img {
+img {
     position: absolute;
     width: 100%;
     border-radius: inherit;
     transition: all 0.3s linear;
 }
 
-.rentScooter p {
+.page_content p {
     position: absolute;
     height: 100%;
     width: 100%;
@@ -57,64 +80,6 @@
 }
 
 
-.commitRental {
-    padding: 15px;
-}
-
-.commitRental button {
-    width: 100%;
-    margin-top: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#btnReserve {
-    background: #fc5439;
-    border: 1px solid #fc5439;
-}
-
-#btnCancel {
-    background: #333;
-    border: 1px solid #333;
-    color: #ededed;
-}
-
-#page_headline {
-    margin: 5px;
-    width: 100%;
-    text-align: left;
-    font-size: 1.5rem;
-    margin-top: 10px;
-    color: #fc5439;
-    font-weight: bold;
-}
-
-.content {
-    margin: 5px;
-}
-
-#label {
-    margin-top: 10px;
-    margin-bottom: 0px;
-}
-
-.invalid {
-    border: 1px solid red;
-}
-
-input {
-    margin-top: 0px;
-}
-
-.buttons {
-    position: absolute;
-    bottom: 15px;
-    left: 0;
-    right: 0;
-    padding: 15px;
-    font-size: 1.2rem;
-}
-
 .successRental {
     position: relative;
     background: #333;
@@ -124,43 +89,19 @@ input {
     overflow: hidden;
 }
 
-.successRental .text {
+.text {
     position: absolute;
-    height: 100%;
     width: 100%;
     text-align: center;
     top: 50%;
-    transform: translate(0%, -28%);
+    transform: translate(0%, -50%);
     padding: 10px;
 
     color: #ffffff;
     font-size: 1rem;
 }
 
-#btnBack {
-    background: #fc5439;
-    border: 1px solid #fc5439;
-    padding: 5px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
 
-.highlighted {
-    color: #fc5439;
-    font-weight: bold;
-}
-
-.text .heading {
-    font-weight: bold;
-    font-size: 1.5rem;
-}
-
-#scooterImageSuccess {
-    position: absolute;
-    width: 100%;
-    border-radius: inherit;
-    transition: all 0.3s linear;
-}
 
 .rotated{
     transform: rotateY(180deg);
