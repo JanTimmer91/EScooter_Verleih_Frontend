@@ -93,9 +93,9 @@ class Reservierungen_Single_User extends Component {
                         <Col sm>
                             <BigHeader>Reservierungen anzeigen</BigHeader>
                             <RefreshButtonContainer>
-                                <Button onClick={() => window.location.reload()}>Neu laden</Button>
+                                <Button style={{paddingLeft: "14px", paddingRight: "46px"}} onClick={() => window.location.reload()}>Neu laden</Button>
                             </RefreshButtonContainer>
-                            <a style={{marginLeft: "22px", fontWeight: 300}}>Letzter Check: {this.getTimeStamp()}</a>
+                            <a style={{marginLeft: "10px", fontWeight: 300}}>Letzter Check: {this.getTimeStamp()}</a>
                         </Col>
                         <Col>
                             <div class="float-right">
