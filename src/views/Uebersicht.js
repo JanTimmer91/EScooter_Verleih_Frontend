@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import styled from 'styled-components';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ScooterReservation from "./ScooterReservation";
 
 
 const ContentContainer = styled.div`
@@ -23,8 +24,7 @@ class Uebersicht extends Component {
 
     render() {
         return (
-            <div>Test</div>
-
+            <ScooterReservation userId={3}></ScooterReservation>
         );
     }
 }
