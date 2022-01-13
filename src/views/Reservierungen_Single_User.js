@@ -66,7 +66,7 @@ class Reservierungen_Single_User extends Component {
 
     componentDidMount() {
         document.body.style.backgroundColor = "rgba(203,203,210,.15)"
-        this.getReservations(1)
+        this.getReservations(localStorage.getItem('userId'))
     }
 
     getReservations(userId) {

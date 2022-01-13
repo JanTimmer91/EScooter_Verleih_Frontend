@@ -98,7 +98,7 @@ class ScooterReservation extends Component {
     handleRentScooter() {
         let post_data = {
             "scooterid": this.state.availableScooterId,
-            "userid": this.props.userId
+            "userid": localStorage.getItem('userId')
         };
 
         axios.post('http://localhost/BUSINESSSW/addReservation.php', post_data)

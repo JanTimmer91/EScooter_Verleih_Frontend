@@ -1,7 +1,7 @@
 export const routes = [
     {
         title: 'Reservierungen aller Nutzer',
-        path: '/',
+        path: '/reservierungshistorieAlleNutzer',
         cName: 'dropdown-link'
     },
     {
@@ -16,7 +16,7 @@ export const routes = [
     },
     {
         title: 'Scooter reservieren',
-        path: '/scooterReservation',
+        path: '/',
         cName: 'dropdown-link'
     },
 ];

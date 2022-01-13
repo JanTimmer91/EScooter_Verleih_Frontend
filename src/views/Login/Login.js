@@ -6,10 +6,14 @@ import './login.css';
 export default class Login extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            name: "",
+            password: ""
+        }
         this.handleClickLogin = this.handleClickLogin.bind(this);
     }
 
-    handleClickLogin() {
+    handleClickLogin = () => {
 
         const name = document.getElementById("name").value;
         const password = document.getElementById("password").value;
@@ -23,7 +27,7 @@ export default class Login extends Component {
             .then(data => {
                 if (data.ok.length >0) {
                     console.log("Name "+data.ok[0].NAME)
-                    localStorage.setItem('userName', data.ok[0].NAME);
+                    this.props.updateState(true, name, data.ok[0].USER_ID)
 
                 } else {
                     console.log("Nicht ok!");

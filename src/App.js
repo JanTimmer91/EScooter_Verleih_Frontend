@@ -4,21 +4,37 @@ import Reservierungen_All_Users from "./views/Reservierungen_All_Users";
 import Reservierungen_Single_User from "./views/Reservierungen_Single_User";
 import ScooterStatus from "./views/ScooterStatus";
 import ScooterReservation from "./views/ScooterReservation";
+import Login from "./views/Login/Login";
 
 import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 
 function App() {
 
+    function updateState(bool, userName, userId){
+        if(bool == false) alert("Login unsuccessful")
+        localStorage.setItem('showWebsite', bool);
+        localStorage.setItem('userName', userName);
+        localStorage.setItem('userId', userId);
+        window.location.reload()
+    }
+    function logout(){
+        localStorage.setItem('showWebsite', '');
+        localStorage.setItem('userName', '');
+        localStorage.setItem('userId', '');
+        window.location.reload()
+    }
     return (
-        <BrowserRouter>
-            <Menu userName={localStorage.getItem('userName')}/>
+        localStorage.getItem('showWebsite') === 'true' ?
+            <BrowserRouter>
+            <Menu userName={localStorage.getItem('userName')} logout={logout}/>
             <Switch>
-                <Route path='/' exact component={Reservierungen_All_Users}/>
+                <Route path='/reservierungshistorieAlleNutzer' exact component={Reservierungen_All_Users}/>
                 <Route path='/reservierungshistorie' component={Reservierungen_Single_User}/>
                 <Route path='/scooterStatus' component={ScooterStatus}/>
-                <Route path='/scooterReservation' component={ScooterReservation}/>
+                <Route path='/' component={ScooterReservation}/>
             </Switch>
         </BrowserRouter>
+            : <Login updateState={updateState}/>
     );
 }
 
