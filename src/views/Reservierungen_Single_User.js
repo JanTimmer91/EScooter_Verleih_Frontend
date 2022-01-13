@@ -70,7 +70,7 @@ class Reservierungen_Single_User extends Component {
     }
 
     getReservations(userId) {
-        axios.post('http://localhost/BUSINESSSW/verleihoverviewbyperson.php', {"id": userId})
+        axios.post('http://localhost/BUSINESSSW/reservationoverviewbyperson.php', {"id": userId})
             .then(response => response.data)
             .then(data => {
                 this.setState({reservations: data})
@@ -147,7 +147,7 @@ class Reservierungen_Single_User extends Component {
                                     </tr>
                                     : null
                                 ) :
-                                <div style={{fontStyle: "italic"}}><br/>Es gibt noch keine Reservierungen. Gut für dich!
+                                <div style={{fontStyle: "italic"}}><br/>Es gibt noch keine Reservierungen.
                                 </div>
 
                             }

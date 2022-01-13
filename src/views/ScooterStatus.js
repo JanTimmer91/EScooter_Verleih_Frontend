@@ -13,7 +13,7 @@ export default class ScooterStatus extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8888/BUSINESSSW/getScooterStatus.php')
+        axios.get('http://localhost/BUSINESSSW/getScooterStatus.php')
             .then(response => {
                 this.scooters = response.data;
                 let element =0

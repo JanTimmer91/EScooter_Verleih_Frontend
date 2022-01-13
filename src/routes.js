@@ -5,8 +5,18 @@ export const routes = [
         cName: 'dropdown-link'
     },
     {
-        title: 'Historie aller Reservierungen',
+        title: 'Reservierungen einzelner User',
         path: '/reservierungshistorie',
+        cName: 'dropdown-link'
+    },
+    {
+        title: 'Scooter-Status einsehen',
+        path: '/scooterStatus',
+        cName: 'dropdown-link'
+    },
+    {
+        title: 'Scooter reservieren',
+        path: '/scooterReservation',
         cName: 'dropdown-link'
     },
 ];

@@ -71,7 +71,7 @@ class Reservierungen_All_Users extends Component {
     }
 
     getReservations() {
-        axios.get('http://localhost/BUSINESSSW/verleihoverview.php')
+        axios.get('http://localhost/BUSINESSSW/reservationOverview.php')
             .then(response => response.data)
             .then(data => {
                 this.setState({reservations: data})

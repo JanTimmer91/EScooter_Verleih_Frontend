@@ -14,7 +14,7 @@ export default class Login extends Component {
         const name = document.getElementById("name").value;
         const password = document.getElementById("password").value;
 
-            axios.post('http://localhost:8888/BUSINESSSW/login.php', {
+            axios.post('http://localhost/BUSINESSSW/login.php', {
                 "name": name,
                 "password": password
             
@@ -23,6 +23,8 @@ export default class Login extends Component {
             .then(data => {
                 if (data.ok.length >0) {
                     console.log("Name "+data.ok[0].NAME)
+                    localStorage.setItem('userName', data.ok[0].NAME);
+
                 } else {
                     console.log("Nicht ok!");
                 }

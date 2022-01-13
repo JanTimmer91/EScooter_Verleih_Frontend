@@ -37,7 +37,7 @@ class ScooterReservation extends Component {
     getActiveScooterRental() {
         // Check if there is an open reservation
 
-        axios.post('http://localhost/BUSINESSSW/verleihoverviewbypersonempty.php', {id: this.props.userId})
+        axios.post('http://localhost/BUSINESSSW/reservationoverviewbypersonempty.php', {id: this.props.userId})
         .then(response => {
             if (response.data.length > 0) {
                 this.setState({
