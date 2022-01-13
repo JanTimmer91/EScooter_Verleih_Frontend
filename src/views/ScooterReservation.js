@@ -15,7 +15,6 @@ import axios from "axios";
 class ScooterReservation extends Component {
 
     scooters = {};
-    userid = 1;
 
     goBackCallbackFunction = () => {this.handleClickScooterRentalBack();};
     
@@ -38,7 +37,7 @@ class ScooterReservation extends Component {
     getActiveScooterRental() {
         // Check if there is an open reservation
 
-        axios.post('http://localhost/BUSINESSSW/verleihoverviewbypersonempty.php', {id: this.userid})
+        axios.post('http://localhost/BUSINESSSW/verleihoverviewbypersonempty.php', {id: this.props.userId})
         .then(response => {
             if (response.data.length > 0) {
                 this.setState({
@@ -99,7 +98,7 @@ class ScooterReservation extends Component {
     handleRentScooter() {
         let post_data = {
             "scooterid": this.state.availableScooterId,
-            "userid": this.userid
+            "userid": this.props.userId
         };
 
         axios.post('http://localhost/BUSINESSSW/addReservation.php', post_data)
@@ -173,9 +172,7 @@ class ScooterReservation extends Component {
                     <div id="no_scooter_page" class="page rotated">
                         <div class="page_content" onClick={this.handleReload}>
                             <img src={escooterimg_sw} alt="E-Scooter"></img>
-                            <div class="text">
-                                <p>Zur Zeit ist leider kein E-Scooter verfügbar.</p>
-                            </div>
+                            <p>Zur Zeit ist leider kein E-Scooter verfügbar.</p>
                         </div>
                     </div>
                     <div id="rent_page" class="page rotated">
