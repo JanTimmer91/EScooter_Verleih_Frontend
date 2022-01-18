@@ -37,7 +37,7 @@ class ScooterReservation extends Component {
     getActiveScooterRental() {
         // Check if there is an open reservation
 
-        axios.post('http://localhost/BUSINESSSW/reservationoverviewbypersonempty.php', {id: this.props.userId})
+        axios.post('http://localhost/BUSINESSSW/reservationoverviewbypersonempty.php', {id: localStorage.getItem('userId')})
         .then(response => {
             if (response.data.length > 0) {
                 this.setState({
@@ -115,7 +115,7 @@ class ScooterReservation extends Component {
     handleReturnScooter() {
         let post_data = {
             "reservationid": this.state.activeReservationId,
-            "id": this.state.reservedScooterId
+            "scooterid": this.state.reservedScooterId
         };
 
         axios.post('http://localhost/BUSINESSSW/removeReservation.php', post_data)
