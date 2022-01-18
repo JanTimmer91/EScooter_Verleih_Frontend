@@ -71,7 +71,7 @@ class Reservierungen_All_Users extends Component {
     }
 
     getReservations() {
-        axios.get('http://localhost/BUSINESSSW/verleihoverview.php')
+        axios.get('http://localhost/BUSINESSSW/reservationOverview.php')
             .then(response => response.data)
             .then(data => {
                 this.setState({reservations: data})
@@ -94,7 +94,7 @@ class Reservierungen_All_Users extends Component {
                         <Col sm>
                             <BigHeader>(Admin) Reservierungen aller Nutzer anzeigen</BigHeader>
                             <RefreshButtonContainer>
-                                <Button onClick={() => window.location.reload()}>Neu laden</Button>
+                                <Button style={{paddingLeft: "14px", paddingRight: "46px"}} onClick={() => window.location.reload()}>Neu laden</Button>
                             </RefreshButtonContainer>
                             <a style={{marginLeft: "22px", fontWeight: 300}}>Letzter Check: {this.getTimeStamp()}</a>
                         </Col>

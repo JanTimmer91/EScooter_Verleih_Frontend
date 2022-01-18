@@ -94,7 +94,8 @@ class Menu extends Component {
                     </MenuContainer> : null}
                 <PageTitle>{this.state.navbarTitle === '' ? "Menu" : this.state.navbarTitle}</PageTitle>
                 <div className="float-right" style={{marginRight: "5px"}}>
-                    <b style={{marginRight: "5px"}}>Welcome!</b>
+                    <b style={{marginRight: "5px"}}>Willkommen, {localStorage.getItem('userName')}!</b>
+                    <Button style={{marginBottom: "5px", marginTop: "5px", marginRight: "5px"}} onClick={() => this.props.logout()}>Logout</Button>
                 </div>
             </NavTop>
         );

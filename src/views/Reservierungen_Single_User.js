@@ -66,11 +66,11 @@ class Reservierungen_Single_User extends Component {
 
     componentDidMount() {
         document.body.style.backgroundColor = "rgba(203,203,210,.15)"
-        this.getReservations(1)
+        this.getReservations(localStorage.getItem('userId'))
     }
 
     getReservations(userId) {
-        axios.post('http://localhost/BUSINESSSW/verleihoverviewbyperson.php', {"id": userId})
+        axios.post('http://localhost/BUSINESSSW/reservationoverviewbyperson.php', {"id": userId})
             .then(response => response.data)
             .then(data => {
                 this.setState({reservations: data})
@@ -93,9 +93,9 @@ class Reservierungen_Single_User extends Component {
                         <Col sm>
                             <BigHeader>Reservierungen anzeigen</BigHeader>
                             <RefreshButtonContainer>
-                                <Button onClick={() => window.location.reload()}>Neu laden</Button>
+                                <Button style={{paddingLeft: "14px", paddingRight: "46px"}} onClick={() => window.location.reload()}>Neu laden</Button>
                             </RefreshButtonContainer>
-                            <a style={{marginLeft: "22px", fontWeight: 300}}>Letzter Check: {this.getTimeStamp()}</a>
+                            <a style={{marginLeft: "10px", fontWeight: 300}}>Letzter Check: {this.getTimeStamp()}</a>
                         </Col>
                         <Col>
                             <div class="float-right">
@@ -147,7 +147,7 @@ class Reservierungen_Single_User extends Component {
                                     </tr>
                                     : null
                                 ) :
-                                <div style={{fontStyle: "italic"}}><br/>Es gibt noch keine Reservierungen. Gut für dich!
+                                <div style={{fontStyle: "italic"}}><br/>Es gibt noch keine Reservierungen.
                                 </div>
 
                             }
