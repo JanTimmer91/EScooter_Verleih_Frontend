@@ -167,44 +167,46 @@ class ScooterReservation extends Component {
     render() {
         return (
             <div class="container">
-                <h1>E-Scooter Leihen</h1>
-                <div class="pages">
-                    <div id="no_scooter_page" class="page rotated">
-                        <div class="page_content" onClick={this.handleReload}>
-                            <img src={escooterimg_sw} alt="E-Scooter"></img>
-                            <p>Zur Zeit ist leider kein E-Scooter verfügbar.</p>
-                        </div>
-                    </div>
-                    <div id="rent_page" class="page rotated">
-                        <div class="page_content" onClick={this.handleRentScooter}>
-                            <img src={escooterimg} alt="E-Scooter"></img>
-                            <p>Jetzt E-Scooter ausleihen</p>
-                        </div>
-                    </div>
-                    <div id="rent_success_page" class="page rotated">
-                        <div class="successRental">
-                            <img id="scooterImageSuccess" src={escooterimg_sw} alt="E-Scooter"></img>
-                            <div class="text">
-                                <h3>Reservierung erfolgreich.</h3>
-                                <p>Der <span class="highlighted">E-Scooter Nr. {this.state.availableScooterId}</span> steht nun für Sie bereit</p>
-                                <button onClick={this.handleReload}>Zurück</button>
+                <h1>E-Scooter leihen</h1>
+                <div class="pages-container">
+                    <div class="pages">
+                        <div id="no_scooter_page" class="page rotated">
+                            <div class="page_content" onClick={this.handleReload}>
+                                <img src={escooterimg_sw} alt="E-Scooter"></img>
+                                <p>Zur Zeit ist leider kein E-Scooter verfügbar.</p>
                             </div>
                         </div>
-                    </div>
-                    <div id="return_page" class="page rotated">
-                        <div class="page_content" onClick={this.handleReturnScooter}>
-                            <img src={escooterimg_sw} alt="E-Scooter"></img>
-                            <p>E-Scooter jetzt zurückgeben.</p>
-                        </div>
-                    </div>
-                    <div id="return_success_page" class="page rotated">
-                        <div class="page_content">
-                            <img src={escooterimg_sw} alt="E-Scooter"></img>
-                            <div class="text">
-                                <h3>Der E-Scooter wurde zurückgegeben.</h3>
-                                <button onClick={this.handleReload}>Zurück</button>
+                        <div id="rent_page" class="page rotated">
+                            <div class="page_content" onClick={this.handleRentScooter}>
+                                <img src={escooterimg} alt="E-Scooter"></img>
+                                <p>Jetzt E-Scooter ausleihen</p>
                             </div>
+                        </div>
+                        <div id="rent_success_page" class="page rotated">
+                            <div class="successRental">
+                                <img id="scooterImageSuccess" src={escooterimg_sw} alt="E-Scooter"></img>
+                                <div class="text">
+                                    <h3>Reservierung erfolgreich.</h3>
+                                    <p>Der <span class="highlighted">E-Scooter Nr. {this.state.availableScooterId}</span> steht nun für Sie bereit</p>
+                                    <button onClick={this.handleReload}>Zurück</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="return_page" class="page rotated">
+                            <div class="page_content" onClick={this.handleReturnScooter}>
+                                <img src={escooterimg_sw} alt="E-Scooter"></img>
+                                <p>E-Scooter jetzt zurückgeben.</p>
+                            </div>
+                        </div>
+                        <div id="return_success_page" class="page rotated">
+                            <div class="page_content">
+                                <img src={escooterimg_sw} alt="E-Scooter"></img>
+                                <div class="text">
+                                    <h3>Der E-Scooter wurde zurückgegeben.</h3>
+                                    <button onClick={this.handleReload}>Zurück</button>
+                                </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
